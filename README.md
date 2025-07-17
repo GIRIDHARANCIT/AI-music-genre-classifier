@@ -23,4 +23,15 @@ It’s a great showcase of:
 ---
 
 ## 📂 Project Structure
+├── app/ # Streamlit app
+│ └── app.py
+├── saved_models/ # Saved model (.pkl)
+│ └── genre_classifier.pkl
+├── src/ # Scripts
+│ ├── data_processing.py
+│ ├── feature_extraction.py
+│ └── train_model.py
+├── data/ # (ignored) raw audio data
+├── requirements.txt
+└── README.md
 
