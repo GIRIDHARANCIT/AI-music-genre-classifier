@@ -1,4 +1,3 @@
-Download these python modules
 numpy
 pandas
 scikit-learn
