@@ -1,8 +1,7 @@
-numpy
-pandas
+streamlit
 scikit-learn
 librosa
-matplotlib
-seaborn
-streamlit
+numpy
+pandas
 joblib
+matplotlib
