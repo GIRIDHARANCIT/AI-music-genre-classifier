@@ -1,0 +1,9 @@
+Download these python modules
+numpy
+pandas
+scikit-learn
+librosa
+matplotlib
+seaborn
+streamlit
+joblib
