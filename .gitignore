@@ -1,23 +1,23 @@
-# Byte-compiled / cache
+# Ignore raw data files and large files
+data/
+*.wav
+*.mp3
+*.zip
+*.tar
+*.tar.gz
+*.h5
+*.pkl
+
+# Python cache
 __pycache__/
-*.py[cod]
-*.so
-
-# Data files
-data/*.csv
-data/*.wav
-data/*.mp3
-
-# Saved models
-saved_models/*.pkl
+*.pyc
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints
 
-# Virtual environment
-venv/
-.env/
-
-# OS files
+# System files
 .DS_Store
-Thumbs.db
+
+# Virtual env
+.env/
+venv/
