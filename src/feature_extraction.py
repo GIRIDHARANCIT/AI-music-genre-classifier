@@ -1,42 +1,34 @@
-"""
-feature_extraction.py
-
-Extracts audio features using librosa and saves to a CSV file.
-"""
-
+import os
+import numpy as np
 import pandas as pd
 import librosa
-import numpy as np
 
-def extract_features(file):
-    """
-    Extracts MFCC, Zero Crossing Rate, and Spectral Centroid from audio file.
-    Args:
-        file (str): File path.
-    Returns:
-        ndarray: Feature vector.
-    """
-    y, sr = librosa.load(file, duration=30)
-    mfcc = np.mean(librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13).T, axis=0)
-    zcr = np.mean(librosa.feature.zero_crossing_rate(y).T, axis=0)
-    sc = np.mean(librosa.feature.spectral_centroid(y=y, sr=sr).T, axis=0)
-    return np.hstack([mfcc, zcr, sc])
+DATA_DIR = 'Data/genres_original'
+CSV_PATH = 'features.csv'
 
-def create_feature_dataset(metadata_csv):
-    """
-    Reads metadata CSV and extracts features for each file.
-    """
-    df = pd.read_csv(metadata_csv)
-    features = []
-    for idx, row in df.iterrows():
-        f = extract_features(row['filepath'])
-        features.append(f)
-    feature_df = pd.DataFrame(features)
-    feature_df['genre'] = df['genre']
-    return feature_df
+feature_list = []
 
-if __name__ == "__main__":
-    dataset = create_feature_dataset("data/metadata.csv")
-    dataset.to_csv("data/features.csv", index=False)
-    print("Features CSV created:")
-    print(dataset.head())
+genres = os.listdir(DATA_DIR)
+for genre in genres:
+    genre_dir = os.path.join(DATA_DIR, genre)
+    if os.path.isdir(genre_dir):
+        for filename in os.listdir(genre_dir):
+            if filename.endswith('.wav'):
+                file_path = os.path.join(genre_dir, filename)
+                try:
+                    print(f"Extracting from {file_path}")
+                    y, sr = librosa.load(file_path, duration=30)
+                    mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=40)
+                    mfcc_mean = np.mean(mfcc.T, axis=0)
+                    feature_list.append(np.append(mfcc_mean, genre))
+                except Exception as e:
+                    print(f"WARNING: Skipping file due to error: {file_path}")
+                    print(f"   Error details: {e}")
+
+# Convert to DataFrame
+columns = [f'mfcc_{i}' for i in range(1, 41)] + ['label']
+df = pd.DataFrame(feature_list, columns=columns)
+
+# Save to CSV
+df.to_csv(CSV_PATH, index=False)
+print(f"Features saved to {CSV_PATH}")
