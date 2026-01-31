@@ -15,9 +15,6 @@ model_path = os.path.abspath(model_path)
 model = joblib.load(model_path)
 
 def extract_features(file):
-    """
-    Extract exactly the same features as used in training: 40 MFCC mean values
-    """
     y, sr = librosa.load(file, duration=30)
     mfcc = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=40)
     mfcc_mean = np.mean(mfcc.T, axis=0)
@@ -33,4 +30,5 @@ if audio_file is not None:
     
     prediction = model.predict([features])
     st.success(f"**Predicted genre:** {prediction[0]}")
+
 
